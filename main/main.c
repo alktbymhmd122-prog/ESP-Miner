@@ -236,7 +236,7 @@ void app_main(void)
             self_test_show_message(&GLOBAL_STATE, GLOBAL_STATE.SYSTEM_MODULE.asic_status);
             system_init_ret = ESP_FAIL;
         } else {
-            if (xTaskCreate(create_jobs_task, "stratum miner", 8192, (void *) &GLOBAL_STATE, 20, &GLOBAL_STATE.create_jobs_task_handle) != pdPASS) {
+            if (xTaskCreatePinnedToCore(create_jobs_task, "stratum miner", 8192, (void *) &GLOBAL_STATE, 20, &GLOBAL_STATE.create_jobs_task_handle, 1) != pdPASS) {
                 ESP_LOGE(TAG, "Error creating stratum miner task");
             }
             if (xTaskCreate(ASIC_result_task, "asic result", 8192, (void *) &GLOBAL_STATE, 15, NULL) != pdPASS) {
