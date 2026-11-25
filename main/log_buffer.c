@@ -221,7 +221,7 @@ void log_buffer_init(void)
         ESP_LOGI(TAG, "Soft reboot detected, %" PRIu64 " bytes of logs preserved", s_header.total_written);
     }
 
-    BaseType_t ret = xTaskCreate(stdout_flush_task, "stdout_flush", 4096, NULL, 1, NULL);
+    BaseType_t ret = xTaskCreatePinnedToCore(stdout_flush_task, "stdout_flush", 4096, NULL, 1, NULL, 0);
     if (ret != pdPASS) {
         ESP_LOGW(TAG, "Failed to create stdout flush task");
         vSemaphoreDelete(s_stdout_sem);
